@@ -18,7 +18,7 @@
 @property (copy, nonatomic) NSString *keyPath;
 @property (assign, nonatomic) NSObject *target;
 
-+ (instancetype)observerWithTarget:(NSObject *)target keyPath:(NSString *)keyPath block:(SFKVOBlock)block token:(NSString *)token;
++ (instancetype)observerWithTarget:(NSObject *)target keyPath:(NSString *)keyPath block:(SFCKVOBlock)block token:(NSString *)token;
 
 @end
 
@@ -134,9 +134,9 @@ const char * _kSFCKVOProxyObserversKey;
 }
 
 
-- (void)observeKeyPaths:(NSArray *)keyPaths options:(NSKeyValueObservingOptions)options block:(SFKVOBlock)block token:(NSString *)token {
+- (void)sfc_observeKeyPaths:(NSArray *)keyPaths options:(NSKeyValueObservingOptions)options block:(SFCKVOBlock)block token:(NSString *)token {
    [keyPaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-      [self observeKeyPath:obj options:options block:block token:token];
+      [self sfc_observeKeyPath:obj options:options block:block token:token];
    }];
 }
 
@@ -144,13 +144,13 @@ const char * _kSFCKVOProxyObserversKey;
 - (void)_sfcKVODeallocSwizzled {
    // If object has proxy observers - remove them
    @autoreleasepool {
-      NSArray *observers = objc_getAssociatedObject(self, &_kSFKVOProxyObserversKey);
+      NSArray *observers = objc_getAssociatedObject(self, &_kSFCKVOProxyObserversKey);
       if (observers) {
          [observers makeObjectsPerformSelector:@selector(stopObserving)];
       }
    }
    
-   [self _sfKVODeallocSwizzled];
+   [self _sfcKVODeallocSwizzled];
 }
 
 
@@ -176,11 +176,11 @@ const char * _kSFCKVOProxyObserversKey;
 }
 
 
-- (void)removeObserverWithToken:(NSString *)token {
+- (void)sfc_removeObserverWithToken:(NSString *)token {
    @synchronized(self) {
-      NSMutableArray *observers = objc_getAssociatedObject(self, &_kSFKVOProxyObserversKey);
+      NSMutableArray *observers = objc_getAssociatedObject(self, &_kSFCKVOProxyObserversKey);
       if (observers) {
-         SFKVOProxyObserver *observer = [self _observerWithToken:token inArray:observers];
+         SFCKVOProxyObserver *observer = [self _observerWithToken:token inArray:observers];
          if (observer) {
             [observer stopObserving];
             [observers removeObject:observer];

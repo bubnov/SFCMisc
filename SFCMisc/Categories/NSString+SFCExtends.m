@@ -11,7 +11,7 @@
 
 @implementation NSString (SFCExtends)
 
-+ (NSString *)sfc_stringByRepeatingString:(NSString *)string count:(int)count {
++ (NSString *)sfc_stringByRepeatingString:(NSString *)string count:(NSInteger)count {
    NSMutableString *resultString = [NSMutableString string];
    for (int i = 0; i < count; i++) {
       [resultString appendString:string];

@@ -19,7 +19,7 @@
 /**
  Create and return string by repeating |string| |count| times
  */
-+ (NSString *)sfc_stringByRepeatingString:(NSString *)string count:(int)count;
++ (NSString *)sfc_stringByRepeatingString:(NSString *)string count:(NSInteger)count;
 
 /**
  Compile string from objects.
