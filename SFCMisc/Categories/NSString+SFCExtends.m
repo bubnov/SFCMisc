@@ -118,4 +118,68 @@
    return [[[self substringToIndex:1] uppercaseString] stringByAppendingString:[self substringFromIndex:1]];
 }
 
+
+#pragma mark - Regex
+
+- (NSString *)sfc_replaceOccurrencesOfRegex:(NSString *)regex withString:(NSString *)replacement {
+   if ( ! regex || ! replacement) {
+      return self;
+   }
+   return [self stringByReplacingOccurrencesOfString:regex
+                                          withString:replacement
+                                             options:NSRegularExpressionSearch|NSCaseInsensitiveSearch
+                                               range:NSMakeRange(0, [self length])];
+}
+
+
+- (BOOL)sfc_matchedByRegex:(NSString *)regex {
+   NSRange range = [self rangeOfString:regex
+                               options:NSRegularExpressionSearch|NSCaseInsensitiveSearch];
+   
+   return (range.location != NSNotFound);
+}
+
+
+- (NSString *)sfc_searchWithRegex:(NSString *)regex {
+   NSRange range = NSMakeRange(0, [self length]);
+   return [self sfc_searchWithRegex:regex range:range];
+}
+
+
+- (NSString *)sfc_searchWithRegex:(NSString *)regex range:(NSRange)range {
+   NSRange resultRange = [self rangeOfString:regex options:(NSRegularExpressionSearch | NSCaseInsensitiveSearch) range:range];
+   if (resultRange.location != NSNotFound) {
+      return [self substringWithRange:resultRange];
+   }
+   return nil;
+}
+
+
+- (NSArray *)sfc_searchAllWithRegex:(NSString *)regex {
+   NSRange range = NSMakeRange(0, [self length]);
+   return [self sfc_searchAllWithRegex:regex range:range];
+}
+
+
+- (NSArray *)sfc_searchAllWithRegex:(NSString *)regex range:(NSRange)range {
+   NSMutableArray *substrings = [NSMutableArray array];
+   
+   NSRange resultRange = [self rangeOfString:regex options:(NSRegularExpressionSearch | NSCaseInsensitiveSearch) range:range];
+   if (resultRange.location != NSNotFound) {
+      NSString *substring = [self substringWithRange:resultRange];
+      if (substring) {
+         [substrings addObject:substring];
+      }
+      
+      // Search next substrings
+      NSInteger nextLocation = resultRange.location + resultRange.length;
+      if (nextLocation < [self length] - 1) {
+         NSRange nextRange = NSMakeRange(nextLocation, [self length] - nextLocation);
+         [substrings addObjectsFromArray:[self sfc_searchAllWithRegex:regex range:nextRange]];
+      }
+   }
+   
+   return substrings;
+}
+
 @end

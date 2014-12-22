@@ -59,4 +59,14 @@
  */
 - (NSString *)sfc_capitalizeFirstLetter;
 
+/**
+ Regex syntax sugar
+ */
+- (NSString *)sfc_replaceOccurrencesOfRegex:(NSString *)regex withString:(NSString *)replacement;
+- (BOOL)sfc_matchedByRegex:(NSString *)regex;
+- (NSString *)sfc_searchWithRegex:(NSString *)regex;
+- (NSString *)sfc_searchWithRegex:(NSString *)regex range:(NSRange)range;
+- (NSArray *)sfc_searchAllWithRegex:(NSString *)regex;
+- (NSArray *)sfc_searchAllWithRegex:(NSString *)regex range:(NSRange)range;
+
 @end
