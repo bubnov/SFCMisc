@@ -179,7 +179,7 @@
       }
    }
    
-   return substrings;
+   return [substrings count] ? [substrings copy] : nil;
 }
 
 @end
