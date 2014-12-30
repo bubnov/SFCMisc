@@ -11,3 +11,9 @@
    TYPE *dyn_cast_object = (TYPE*)(object); \
    [dyn_cast_object isKindOfClass:[TYPE class]] ? dyn_cast_object : nil; \
 })
+
+#define safe_proto(PROTO, object) \
+({ \
+   id<PROTO> dyn_object = (id<PROTO>)(object); \
+   [dyn_object conformsToProtocol:@protocol(PROTO)] ? dyn_object : nil; \
+})
