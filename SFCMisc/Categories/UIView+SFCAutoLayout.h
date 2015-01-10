@@ -2,7 +2,7 @@
 //  UIView+SFCAutoLayout.h
 //  SFCMisc
 //
-//  Created by v.bubnov on 13.08.13.
+//  Created by Bubnov Slavik on 13.08.13.
 //  Copyright (c) 2013 bubnovslavik@gmail.com. All rights reserved.
 //
 

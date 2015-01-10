@@ -17,3 +17,5 @@
    id<PROTO> dyn_object = (id<PROTO>)(object); \
    [dyn_object conformsToProtocol:@protocol(PROTO)] ? dyn_object : nil; \
 })
+
+#define QUOTE(...) #__VA_ARGS__
